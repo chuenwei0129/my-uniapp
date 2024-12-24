@@ -2,12 +2,12 @@
   <div class="service">service</div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
-export default Vue.extend({
+<script>
+import Vue from "vue";
+export default {
   components: {},
   data() {
-    return {}
+    return {};
   },
   computed: {},
   methods: {},
@@ -31,7 +31,7 @@ export default Vue.extend({
   // onPageScroll(event) {},
   // 页面处理函数--用户点击右上角分享
   // onShareAppMessage(options) {},
-}) 
+};
 </script>
 
 <style lang="scss"></style>
