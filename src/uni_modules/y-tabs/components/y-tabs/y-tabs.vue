@@ -54,10 +54,10 @@
               >
                 <!-- 图标或图片 -->
                 <view class="y-tab__icons" v-if="tab.iconType || tab.imageSrc">
-                  <uni-icons
+                  <u-icon
                     v-if="tab.iconType"
-                    :custom-prefix="tab.customPrefix"
-                    :type="tab.iconType"
+                    :customPrefix="tab.customPrefix"
+                    :name="tab.iconType"
                     :size="Number(tab.iconSize)"
                   />
                   <image
