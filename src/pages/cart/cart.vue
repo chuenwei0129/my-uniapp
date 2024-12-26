@@ -1,94 +1,144 @@
 <template>
-  <view class="filter-options">
-    <view
-      v-for="(option, index) in options"
-      :key="index"
-      class="filter-item"
-      :class="{ active: selectedIndex === index }"
-      @click="selectOption(index)"
-    >
-      <text class="option-text" :class="{ active: selectedIndex === index }">{{
-        option
-      }}</text>
-      <!-- 价格选项后添加上下箭头 -->
-      <view v-if="option === '价格'" class="arrow">
-        <text class="arrow-text" :class="{ active: selectedIndex === index }"
-          >▲</text
-        >
-        <text class="arrow-text" :class="{ active: selectedIndex === index }"
-          >▼</text
-        >
-      </view>
-    </view>
-  </view>
+	<view>
+		<!-- 顶部导航栏 -->
+		<u-navbar title="" bgColor="#40ae36">
+			<template #left>
+				<view class="left">
+					<view>
+						<u-icon name="map" color="#fff" size="20px"></u-icon>
+					</view>
+					<view style="margin-left: 16rpx;margin-right: 8rpx;">海淀区中关村大厦</view>
+					<view>
+						<u-icon name="arrow-down-fill" color="#fff" size="14px" :customStyle="{transform:'scale(0.6)'}">
+						</u-icon>
+					</view>
+				</view>
+			</template>
+			<template #right>
+				<view class="right">
+					<view>
+						<u-icon name="scan" color="#fff" size="25px"></u-icon>
+					</view>
+					<view style="margin-left: 15rpx;">
+						<u-icon name="chat" color="#fff" size="25px"></u-icon>
+					</view>
+				</view>
+			</template>
+		</u-navbar>
+		<!-- 金刚区 -->
+		<view class="vajra">
+			<u-row justify="space-between" gutter="10">
+				<u-col span="2.4">
+					<view class="item">
+						<view class="img">
+							<image src="../../static/logo.png" mode=""></image>
+						</view>
+						<view class="text">水果蔬菜</view>
+					</view>
+				</u-col>
+				<u-col span="2.4">
+					<view class="item">
+						<view class="img">
+							<image src="../../static/logo.png" mode=""></image>
+						</view>
+						<view class="text">肉禽蛋品</view>
+					</view>
+				</u-col>
+				<u-col span="2.4">
+					<view class="item">
+						<view class="img">
+							<image src="../../static/logo.png" mode=""></image>
+						</view>
+						<view class="text">海鲜水产</view>
+					</view>
+				</u-col>
+				<u-col span="2.4">
+					<view class="item">
+						<view class="img">
+							<image src="../../static/logo.png" mode=""></image>
+						</view>
+						<view class="text">速食冷冻</view>
+					</view>
+				</u-col>
+				<u-col span="2.4">
+					<view class="item">
+						<view class="img">
+							<image src="../../static/logo.png" mode=""></image>
+						</view>
+						<view class="text">粮油米面</view>
+					</view>
+				</u-col>
+			</u-row>
+		</view>
+	</view>
+	</view>
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      options: ["综合排序", "距离优先", "销量优先", "价格"],
-      selectedIndex: 0, // 默认选中第一个
-    };
-  },
-  methods: {
-    selectOption(index) {
-      this.selectedIndex = index;
-    },
-  },
-};
+	export default {
+		data() {
+			return {
+				list1: [
+					'https://cdn.uviewui.com/uview/swiper/swiper1.png'
+				]
+			}
+		},
+		onLoad() {
+
+		},
+		methods: {
+			onSearch() {
+				console.log('跳转');
+			}
+		}
+	}
 </script>
 
-<style>
-.filter-options {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: 10px 0;
-  background-color: #f5f5f5;
-}
+<style lang="scss">
+	.left {
+		display: flex;
+		align-items: center;
+		color: #fff;
+		font-size: 30rpx;
+	}
 
-.filter-item {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  margin: 0 5px; /* 控制间距 */
-  background-color: #e0e0e0; /* 默认灰色底 */
-  border-radius: 8px;
-  cursor: pointer;
-}
+	.right {
+		display: flex;
+	}
 
-.filter-item.active {
-  background-color: #ffe5e5; /* 选中项红色底 */
-}
+	.search {
+		margin-top: 44px;
+		padding: 15rpx 26rpx;
+	}
 
-.option-text {
-  font-size: 14px;
-  color: black; /* 默认黑色文字 */
-  font-weight: normal; /* 默认正常字重 */
-}
-
-.option-text.active {
-  color: red; /* 选中项红色文字 */
-  font-weight: 500; /* 选中项 medium 字重 */
-}
-
-.arrow {
-  display: flex;
-  flex-direction: column;
-  margin-left: 5px;
-}
-
-.arrow-text {
-  font-size: 10px;
-  color: black; /* 默认黑色箭头 */
-}
-
-.arrow-text.active {
-  color: red; /* 选中项红色箭头 */
-}
+	.swiper {
+		padding: 10rpx 25rpx 25rpx;
+	}
+	.vajra {
+		padding:10rpx 25rpx;
+	}
+	
+	.item {
+	        height:163rpx;
+	        border-radius: 4px;
+			display:flex;
+			flex-direction: column;
+			align-items: center;
+			.img {
+				height:108rpx;
+				width: 108rpx;
+				background:red;
+				border-radius: 50%;
+				margin-bottom:7rpx;
+				image {
+					width: 100%;
+					height: 100%;
+					border-radius: 50%;
+				}
+			}
+			.text {
+				font-size: 24rpx;
+				color: #666666;
+			}
+	    }
 </style>
