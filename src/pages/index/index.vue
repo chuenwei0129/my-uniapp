@@ -1,103 +1,150 @@
+<!-- 滑动切换选项卡+吸顶演示(上一个tab数据不保留，滚动流畅) -->
 <template>
-  <view class="container">
-    <view class="content">
-      <!-- 模拟长内容 -->
-      <view v-for="i in 100" :key="i" class="item">内容 {{ i }}</view>
-    </view>
-
-    <!-- 回到顶部按钮 -->
-    <view
-      v-if="showButton"
-      class="back-to-top"
-      :class="{ 'full-show': fullyVisible }"
-      @click="scrollToTop"
+  <view class="content">
+    <z-paging-mini
+      ref="pagePaging"
+      refresher-only
+      @onRefresh="onRefresh"
+      @scrolltolower="scrolltolower"
     >
-      ▲
-    </view>
+      <!-- 自定义下拉刷新view -->
+      <template #refresher="{ refresherStatus }">
+        <First :status="refresherStatus" />
+      </template>
+      <view class="banner-view" style="height: 250rpx">
+        <view style="font-size: 40rpx; font-weight: 700">这是一个banner</view>
+        <view style="font-size: 24rpx; margin-top: 5rpx"
+          >下方tab滚动时可吸附在顶部</view
+        >
+      </view>
+      <view>
+        <!-- 小程序中直接修改组件style为position: sticky;无效，需要在组件外层套一层view -->
+        <view style="z-index: 100; position: sticky; top: 0">
+          <!-- 注意！此处的z-tabs为独立的组件，可替换为第三方的tabs，若需要使用z-tabs，请在插件市场搜索z-tabs并引入，否则会报插件找不到的错误 -->
+          <z-tabs
+            ref="tabs"
+            :current="current"
+            :list="tabList"
+            @change="tabsChange"
+          />
+        </view>
+        <swiper
+          class="swiper"
+          :style="[{ height: swiperHeight + 'px' }]"
+          :current="current"
+          @transition="swiperTransition"
+          @animationfinish="swiperAnimationfinish"
+        >
+          <swiper-item
+            class="swiper-item"
+            v-for="(item, index) in tabList"
+            :key="index"
+          >
+            <!-- 这里的sticky-swiper-next-item为demo中为演示用定义的组件，列表及分页代码在sticky-swiper-next-item组件内 -->
+            <!-- 请注意，sticky-swiper-next-item非z-paging-mini内置组件，在自己的项目中必须自己创建，若未创建则会报组件不存在的错误 -->
+            <Item
+              ref="swiperList"
+              :tabIndex="index"
+              :currentIndex="current"
+              @heightChanged="heightChanged"
+            >
+            </Item>
+          </swiper-item>
+        </swiper>
+      </view>
+    </z-paging-mini>
   </view>
 </template>
 
 <script>
+import Item from './Item.vue'
+import First from './First.vue'
 export default {
+  components: {
+    Item,
+    First,
+  },
+
   data() {
     return {
-      scrollTop: 0, // 当前滚动高度
-      showButton: false, // 控制按钮显示
-      fullyVisible: false, // 按钮是否完全显示
-      timer: null, // 定时器，用于记录用户停留时间
-    };
-  },
-  onPageScroll(e) {
-    this.scrollTop = e.scrollTop;
-
-    // 判断是否超过750像素
-    if (this.scrollTop > 750) {
-      if (!this.showButton) {
-        this.showButton = true; // 半隐藏展示
-      }
-
-      // 如果已经展示，启动定时器
-      if (!this.timer) {
-        this.timer = setTimeout(() => {
-          this.fullyVisible = true; // 全部展示
-        }, 5000); // 用户停留超过1秒
-      }
-    } else {
-      // 重置按钮状态和计时器
-      this.showButton = false;
-      this.fullyVisible = false;
-      clearTimeout(this.timer);
-      this.timer = null;
+      swiperHeight: 0,
+      tabList: ['测试1', '测试2', '测试3', '测试4'],
+      current: 0, // tabs组件的current值，表示当前活动的tab选项
     }
   },
   methods: {
-    // 回到顶部
-    scrollToTop() {
-      uni.pageScrollTo({
-        scrollTop: 0,
-        duration: 300,
-      });
+    // tabs通知swiper切换
+    tabsChange(index) {
+      this._setCurrent(index)
+    },
+    // 下拉刷新时，通知当前显示的列表进行reload操作
+    onRefresh() {
+      this.$refs.swiperList[this.current].reload(() => {
+        //当当前显示的列表刷新结束，结束当前页面的刷新状态
+        this.$refs.pagePaging.endRefresh()
+      })
+    },
+    // 当滚动到底部时，通知当前显示的列表加载更多
+    scrolltolower() {
+      this.$refs.swiperList[this.current].doLoadMore()
+    },
+    // swiper滑动中
+    swiperTransition(e) {
+      this.$refs.tabs.setDx(e.detail.dx)
+    },
+    // swiper滑动结束
+    swiperAnimationfinish(e) {
+      this._setCurrent(e.detail.current)
+      this.$refs.tabs.unlockDx()
+    },
+    // 设置swiper的高度
+    heightChanged(height) {
+      if (height === 0) {
+        // 默认swiper高度为屏幕可用高度-tabsView高度-slot="top"内view的高度
+        // 注意：this.rpx2px(80)不是固定的，它等于slot="top"内view的高度，如果slot="top"内view的高度不为80rpx，则需要修改这个值
+        height = uni.getSystemInfoSync().windowHeight - this.rpx2px(80)
+      }
+      this.swiperHeight = height
+    },
+    _setCurrent(current) {
+      if (current !== this.current) {
+        //切换tab时，将上一个tab的数据清空
+        this.$refs.swiperList[this.current].clear()
+      }
+      this.current = current
+    },
+
+    // rpx => px，兼容鸿蒙
+    rpx2px(rpx) {
+      // #ifdef APP-HARMONY
+      const screenWidth = uni.getSystemInfoSync().screenWidth
+      return (screenWidth * Number.parseFloat(rpx)) / 750
+      // #endif
+      // #ifndef APP-HARMONY
+      return uni.upx2px(rpx)
+      // #endif
     },
   },
-  beforeDestroy() {
-    // 清除计时器
-    clearTimeout(this.timer);
-  },
-};
+}
 </script>
 
 <style>
-.container {
-  position: relative;
-  padding: 20px;
+.banner-view {
+  background-color: #007aff;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.content {
-  height: 2000px; /* 模拟长内容 */
+.paging-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.item {
-  margin: 10px 0;
-}
-
-.back-to-top {
-  position: fixed;
-  bottom: 60px;
-  right: -30px; /* 初始状态，半隐藏（宽度为60px） */
-  width: 60px;
-  height: 60px;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #fff;
-  text-align: center;
-  line-height: 60px;
-  border-radius: 50%;
-  transition: right 0.3s, opacity 0.3s, transform 0.3s;
-  opacity: 0.8;
-}
-
-.back-to-top.full-show {
-  right: 20px; /* 全部展示 */
-  opacity: 1;
-  transform: scale(1.1);
+.swiper {
+  height: 1000px;
 }
 </style>

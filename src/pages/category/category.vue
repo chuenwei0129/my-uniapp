@@ -1,124 +1,80 @@
 <template>
-  <div class="category">
-    <u--image
-      src="https://cdn.uviewui.com/uview/album/1.jpg"
-      :fade="true"
-      duration="450"
-    ></u--image>
-
-    <!-- 金刚区 -->
-    <view class="todo">
-      <u-row justify="space-between" gutter="10">
-        <u-col span="2.4">
-          <view class="item">
-            <view class="img">
-              <image src="../../static/logo.png" mode=""></image>
-            </view>
-            <view class="text">水果蔬菜</view>
-          </view>
-        </u-col>
-        <u-col span="2.4">
-          <view class="item">
-            <view class="img">
-              <image src="../../static/logo.png" mode=""></image>
-            </view>
-            <view class="text">肉禽蛋品</view>
-          </view>
-        </u-col>
-        <u-col span="2.4">
-          <view class="item">
-            <view class="img">
-              <image src="../../static/logo.png" mode=""></image>
-            </view>
-            <view class="text">海鲜水产</view>
-          </view>
-        </u-col>
-        <u-col span="2.4">
-          <view class="item">
-            <view class="img">
-              <image src="../../static/logo.png" mode=""></image>
-            </view>
-            <view class="text">速食冷冻</view>
-          </view>
-        </u-col>
-        <u-col span="2.4">
-          <view class="item">
-            <view class="img">
-              <image src="../../static/logo.png" mode=""></image>
-            </view>
-            <view class="text">粮油米面</view>
-          </view>
-        </u-col>
-      </u-row>
-    </view>
-    <!-- 分类 -->
-    <Swiper></Swiper>
-    <Tabs></Tabs>
-  </div>
+  <view>
+    <u-tabs
+      :list="list"
+      lineWidth="40"
+      :current="current"
+      @change="tabChange"
+    ></u-tabs>
+    <swiper
+      class="scroll-view-height"
+      @change="swipeIndex"
+      :current="current"
+      :duration="300"
+    >
+      <swiper-item>
+        <scroll-view scroll-y="true" class="scroll-view-height list-content">
+          <view class="list-item" v-for="(item, index) in 20" :key="'A' + index"
+            >tab1- {{ index }}</view
+          >
+        </scroll-view>
+      </swiper-item>
+      <swiper-item>
+        <scroll-view scroll-y="true" class="scroll-view-height list-content">
+          <view class="list-item" v-for="(item, index) in 20" :key="'B' + index"
+            >tab2- {{ index }}</view
+          >
+        </scroll-view>
+      </swiper-item>
+    </swiper>
+    <tabbar :current="2"></tabbar>
+  </view>
 </template>
 
 <script>
-import Tabs from "./Tabs.vue";
-import Swiper from "./Swiper.vue";
 export default {
-  components: {
-    Tabs,
-    Swiper,
-  },
+  name: 'index',
   data() {
-    return {};
+    return {
+      // swiper索引
+      current: 0,
+      list: [
+        {
+          name: 'tab1',
+        },
+        {
+          name: 'tab2',
+        },
+      ],
+    }
   },
-  computed: {},
-  methods: {},
-  watch: {},
-
-  // 页面周期函数--监听页面加载
-  onLoad() {},
-  // 页面周期函数--监听页面初次渲染完成
-  onReady() {},
-  // 页面周期函数--监听页面显示(not-nvue)
-  onShow() {},
-  // 页面周期函数--监听页面隐藏
-  onHide() {},
-  // 页面周期函数--监听页面卸载
-  onUnload() {},
-  // 页面处理函数--监听用户下拉动作
-  // onPullDownRefresh() { uni.stopPullDownRefresh(); },
-  // 页面处理函数--监听用户上拉触底
-  // onReachBottom() {},
-  // 页面处理函数--监听页面滚动(not-nvue)
-  // onPageScroll(event) {},
-  // 页面处理函数--用户点击右上角分享
-  // onShareAppMessage(options) {},
-};
+  methods: {
+    swipeIndex(index) {
+      // 获得swiper切换后的current索引
+      this.current = index.detail.current
+    },
+    tabChange(data) {
+      this.current = data.index
+    },
+  },
+}
 </script>
 
-<style lang="scss">
-.todo {
-  padding: 10rpx 25rpx;
+<style scoped lang="scss">
+.scroll-view-height {
+  /* 页面高度减去包含状态栏、标题、tab组件的高度 */
+  height: calc(100vh - var(--status-bar-height) - 178rpx);
 }
 
-.item {
-  height: 163rpx;
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .img {
-    height: 108rpx;
-    width: 108rpx;
-    background: red;
-    border-radius: 50%;
-    margin-bottom: 7rpx;
-    image {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-    }
-  }
-  .text {
-    font-size: 24rpx;
-    color: #666666;
-  }
+.list-content {
+  background-color: #f4f4f4;
+}
+
+.list-item {
+  height: 100rpx;
+  line-height: 100rpx;
+  text-align: center;
+  margin: 4rpx 0;
+  background-color: #ffffff;
 }
 </style>

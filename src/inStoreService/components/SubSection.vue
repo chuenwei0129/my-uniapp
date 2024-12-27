@@ -4,7 +4,9 @@
       <view
         :class="[
           'filter-options__item',
-          isFilterSelected(filterTypes.INTELLIGENT) ? 'filter-options__item--active' : ''
+          isFilterSelected(filterTypes.INTELLIGENT)
+            ? 'filter-options__item--active'
+            : '',
         ]"
         @click="onSelectFilter(filterTypes.INTELLIGENT)"
       >
@@ -13,7 +15,9 @@
       <view
         :class="[
           'filter-options__item',
-          isFilterSelected(filterTypes.DISTANCE) ? 'filter-options__item--active' : ''
+          isFilterSelected(filterTypes.DISTANCE)
+            ? 'filter-options__item--active'
+            : '',
         ]"
         @click="onSelectFilter(filterTypes.DISTANCE)"
       >
@@ -22,7 +26,9 @@
       <view
         :class="[
           'filter-options__item',
-          isFilterSelected(filterTypes.SALES) ? 'filter-options__item--active' : ''
+          isFilterSelected(filterTypes.SALES)
+            ? 'filter-options__item--active'
+            : '',
         ]"
         @click="onSelectFilter(filterTypes.SALES)"
       >
@@ -31,13 +37,17 @@
       <view
         :class="[
           'filter-options__item',
-          isPriceFilterActive ? 'filter-options__item--active' : ''
+          isPriceFilterActive ? 'filter-options__item--active' : '',
         ]"
-        @click="onSelectFilter(currentPriceType === filterTypes.PRICE_ASC ? filterTypes.PRICE_DESC : filterTypes.PRICE_ASC)"
+        @click="
+          onSelectFilter(
+            currentPriceType === filterTypes.PRICE_ASC
+              ? filterTypes.PRICE_DESC
+              : filterTypes.PRICE_ASC
+          )
+        "
       >
-        <view class="filter-options__label">
-          价格
-        </view>
+        <view class="filter-options__label"> 价格 </view>
         <view :class="priceIconCssClass" />
       </view>
     </view>
@@ -48,7 +58,7 @@
 export default {
   name: 'FilterOptions',
   emits: ['filterChange'],
-  data () {
+  data() {
     return {
       currentFilter: 1, // 当前选中的筛选类型
       filterTypes: {
@@ -61,16 +71,16 @@ export default {
     }
   },
   computed: {
-    currentPriceType () {
+    currentPriceType() {
       return this.currentFilter
     },
-    isPriceFilterActive () {
+    isPriceFilterActive() {
       return (
         this.currentFilter === this.filterTypes.PRICE_ASC ||
         this.currentFilter === this.filterTypes.PRICE_DESC
       )
     },
-    priceIconCssClass () {
+    priceIconCssClass() {
       if (this.currentFilter === this.filterTypes.PRICE_ASC) {
         return 'filter-options__price-icon filter-options__price-icon--asc'
       } else if (this.currentFilter === this.filterTypes.PRICE_DESC) {
@@ -80,10 +90,10 @@ export default {
     },
   },
   methods: {
-    isFilterSelected (filterType) {
+    isFilterSelected(filterType) {
       return this.currentFilter === filterType
     },
-    onSelectFilter (filterType) {
+    onSelectFilter(filterType) {
       console.log('🚀 ~ onSelectFilter ~ filterType:', filterType)
       if (this.currentFilter === filterType) return
       this.currentFilter = filterType
@@ -142,16 +152,15 @@ export default {
     width: 26rpx;
     background-repeat: no-repeat;
     background-size: contain;
-    background-image: url("https://frontend-cdn.chongpangpang.com/image/medical-mp/mall/sort_filter_price.png");
+    background-image: url('https://frontend-cdn.chongpangpang.com/image/medical-mp/mall/sort_filter_price.png');
 
     &--asc {
-      background-image: url("https://frontend-cdn.chongpangpang.com/image/medical-mp/mall/sort_filter_price_asc1.png");
+      background-image: url('https://frontend-cdn.chongpangpang.com/image/medical-mp/mall/sort_filter_price_asc1.png');
     }
 
     &--desc {
-      background-image: url("https://frontend-cdn.chongpangpang.com/image/medical-mp/mall/sort_filter_price_desc1.png");
+      background-image: url('https://frontend-cdn.chongpangpang.com/image/medical-mp/mall/sort_filter_price_desc1.png');
     }
   }
 }
 </style>
-
