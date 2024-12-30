@@ -1,5 +1,14 @@
-import { Http } from '@/utils/http'
-const { request } = new Http()
+uni.addInterceptor({
+  returnValue (res) {
+    if (!(!!res && (typeof res === 'object' || typeof res === 'function') && typeof res.then === 'function')) {
+      return res
+    }
+    return new Promise((resolve, reject) => {
+      res.then((res) => res[0] ? reject(res[0]) : resolve(res[1]))
+    })
+  },
+})
+
 /**
  * 获取到店服务页资源区数据
  * @function fetchResourceAPI
@@ -21,17 +30,18 @@ const { request } = new Http()
  */
 export const fetchResourceAPI = (
   data = {
-    cityCode: '320100',
-    lng: 118.73145,
-    lat: 32.00335,
+    cityCode: '110100',
+    lng: 0.0,
+    lat: 0.0,
   }
 ) =>
-  request({
-    url: 'presentation/customer/inStoreService/resource',
-    method: 'POST',
-    data,
-    cqm: true,
-    })
+  uni.request({
+    url: 'https://run.mocky.io/v3/8c94ec24-3322-4f56-8343-727de7cf5502',
+    method: 'GET',
+    header: {
+      'Content-Type': 'application/json',
+    },
+  })
 
 /**
  * 获取优惠券列表数据
@@ -52,16 +62,17 @@ export const fetchResourceAPI = (
  */
 export const fetchCouponListAPI = (
   data = {
-    userId: '428389341451890688', // 用户 id，这块有改动，不是字符串传数值
+    userId: 0, // 用户 id，这块有改动，不是字符串传数值
     status: 5, // 5 - 待核销
   }
 ) =>
-  request({
-    url: 'presentation/customer/online-offline/v1/order/service/list',
-    method: 'POST',
-    data,
-    cqm: true,
-    })
+  uni.request({
+    url: 'https://run.mocky.io/v3/f5f16bad-5537-4735-8962-2451155f038f',
+    method: 'GET',
+    header: {
+      'Content-Type': 'application/json',
+    },
+  })
 
 /**
  * 获取到店服务组件区数据
@@ -83,12 +94,13 @@ export const fetchComponentListAPI = (
     page: 2, // 2 - 到店服务
   }
 ) =>
-  request({
-    url: 'presentation/customer/app/home/listComponent',
-    method: 'POST',
-    data,
-    cqm: true,
-    })
+  uni.request({
+    url: 'https://run.mocky.io/v3/a48dc23e-6370-4489-b934-5b68c300fa0d',
+    method: 'GET',
+    header: {
+      'Content-Type': 'application/json',
+    },
+  })
 
   /**
  * 获取到店服务金刚区导航数据
@@ -107,16 +119,16 @@ export const fetchComponentListAPI = (
  */
 export const fetchNavigationAPI = (
   data = {
-    displayChannel: 'APP_MP',
     bizType: 2, // 业务场景-2-到店服务金刚区
   }
 ) =>
-  request({
-    url: 'presentation/customer/app/homepage/v3/navigationArea',
-    method: 'POST',
-    data,
-    cqm: true,
-    })
+  uni.request({
+    url: 'https://run.mocky.io/v3/d135efd6-57ae-4e7b-9240-125ccfa4ab71',
+    method: 'GET',
+    header: {
+      'Content-Type': 'application/json',
+    },
+  })
 
   /**
  * 获取推荐类目数据
@@ -141,12 +153,13 @@ export const fetchRecommendClassifyAPI = (
     commodityClassifyType: 2, // 商品类型 => 1：实物商品 2：服务商品 3：活体商品
   }
 ) =>
-  request({
-    url: 'presentation/customer/app/homepage/v2/recommendClassify',
-    method: 'POST',
-    data,
-    cqm: true,
-    })
+  uni.request({
+    url: 'https://run.mocky.io/v3/7e13fa80-f8cd-4153-b61f-a2fb1a8ad63f',
+    method: 'GET',
+    header: {
+      'Content-Type': 'application/json',
+    },
+  })
 
 /**
  * 获取商品列表数据
@@ -179,24 +192,17 @@ export const fetchProductListAPI = (
   data = {
     pageNum: 1,
     pageSize: 2,
-    cityCode: '320100',
-    lng: 118.73145,
-    lat: 32.00335,
+    cityCode: '', // 必传 城市编码
+    lng: 0.0, // 必传 经度
+    lat: 0.0, // 必传 纬度
     categoryId: 1, // 必传 类目id
     sortType: 1, // 必传 排序类型: 1、智能排序 2、距离优先 3、销量优先 4、低价优先
   }
 ) =>
   uni.request({
-    url: 'presentation/customer/inStoreService/productList',
-    method: 'POST',
-    data,
-    cqm: true,
+    url: 'https://run.mocky.io/v3/8909137b-82c8-4b1f-8305-58304a3bb60d',
+    method: 'GET',
+    header: {
+      'Content-Type': 'application/json',
+    },
   })
-
-  // 购物车数量
-// export const fetchCartCount = (data) => request({
-//     url: 'presentation/app/v1/cart/count',
-//     method: 'POST',
-//     data,
-//     cqm: true,
-//   })

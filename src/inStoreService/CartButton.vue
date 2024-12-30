@@ -1,7 +1,7 @@
 <template>
   <view
     class="cart-button"
-    @click="navigateToCart"
+    @click="handleClick"
   >
     <view
       v-if="cartItemCount"
@@ -17,16 +17,17 @@
 </template>
 
 <script>
+// TODO: 获取购物车数量
 export default {
   name: 'CartButton',
   props: {
     cartItemCount: {
       type: Number,
-      default: 1,
+      default: 0,
     },
   },
   methods: {
-    navigateToCart () {
+    handleClick () {
       uni.navigateTo({
         url: '/pagesC/shoppingCart/index',
       })

@@ -1,26 +1,22 @@
 <template>
-  <view class="search-bar">
-    <view class="search-bar__container">
-      <view
-        class="search-bar__input-wrapper"
-        @click="$u.debounce(navigateToSearch, 500)"
-      >
-        <view class="search-bar__input">
-          <view class="search-bar__placeholder">
-            <scan-code color="red" />
-            <view class="search-bar__divider" />
-            <text class="search-bar__text">
-              搜你想要的宠物商品
-            </text>
-          </view>
-          <view class="search-bar__button">
-            <image
-              class="search-bar__icon"
-              src="https://frontend-cdn.chongpangpang.com/image/medical-mp/index2/header-search.png"
-              alt="Search Icon"
-            />
-          </view>
-        </view>
+  <view
+    class="search-bar"
+    @click="$u.debounce(navigateToSearch, 500)"
+  >
+    <view class="search-bar__input">
+      <view class="search-bar__placeholder">
+        <scan-code color="red" />
+        <view class="search-bar__divider" />
+        <text class="search-bar__text">
+          搜你想要的宠物商品
+        </text>
+      </view>
+      <view class="search-bar__button">
+        <image
+          class="search-bar__icon"
+          src="https://frontend-cdn.chongpangpang.com/image/medical-mp/index2/header-search.png"
+          alt="Search Icon"
+        />
       </view>
     </view>
   </view>
@@ -44,19 +40,9 @@ export default {
 
 <style lang="scss">
 .search-bar {
-  &__container {
     width: 100%;
-    padding: 0 15rpx;
-    display: flex;
-    align-items: center;
-  }
-
-  &__input-wrapper {
-    width: 100%;
-    // margin-top: 1rpx;
     border-radius: 18px;
     border: 3rpx solid #fe2442;
-  }
 
   &__input {
     width: 100%;
