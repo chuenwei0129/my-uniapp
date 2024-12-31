@@ -34,7 +34,7 @@
         </view>
         <!-- 商品销量 -->
         <view class="sales">
-          销量 {{ product.saledStockQty }}
+          销量 {{ product.saledStockQty || 0 }}
         </view>
       </view>
     </view>

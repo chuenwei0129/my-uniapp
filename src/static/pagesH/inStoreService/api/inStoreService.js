@@ -1,13 +1,5 @@
-uni.addInterceptor({
-  returnValue (res) {
-    if (!(!!res && (typeof res === 'object' || typeof res === 'function') && typeof res.then === 'function')) {
-      return res
-    }
-    return new Promise((resolve, reject) => {
-      res.then((res) => res[0] ? reject(res[0]) : resolve(res[1]))
-    })
-  },
-})
+import { Http } from '@/utils/http'
+const { request } = new Http()
 
 /**
  * 获取到店服务页资源区数据
@@ -16,12 +8,14 @@ uni.addInterceptor({
  * @param {string} data.cityCode - 必传，城市编码
  * @param {number} data.lng - 必传，经度
  * @param {number} data.lat - 必传，纬度
+ * @param {string} data.fromChannel - 必传，来源渠道
  * @returns {Promise} 返回一个 Promise 对象，包含请求的结果
  * @example
  * fetchResourceAPI({
- *   cityCode: '110100',
- *   lng: 116.397428,
- *   lat: 39.90923
+ *   cityCode: '3301',
+ *   lng: 121.45712,
+ *   lat: 31.229234,
+ *   fromChannel: 'APP'
  * }).then(response => {
  *   console.log(response.data);
  * }).catch(error => {
@@ -30,29 +24,29 @@ uni.addInterceptor({
  */
 export const fetchResourceAPI = (
   data = {
-    cityCode: '110100',
-    lng: 0.0,
-    lat: 0.0,
+    cityCode: '3301',
+    lng: 121.45712,
+    lat: 31.229234,
+    fromChannel: 'APP'
   }
 ) =>
-  uni.request({
-    url: 'https://run.mocky.io/v3/8c94ec24-3322-4f56-8343-727de7cf5502',
-    method: 'GET',
-    header: {
-      'Content-Type': 'application/json',
-    },
+  request({
+    url: 'presentation/customer/inStoreService/resource',
+    method: 'POST',
+    data,
+    cqm: true,
   })
 
 /**
  * 获取优惠券列表数据
  * @function fetchCouponListAPI
  * @param {Object} [data={}] - 请求参数对象
- * @param {number} data.userId - 必传，用户 ID
- * @param {number} data.status - 必传，优惠券状态（例如：5 - 待核销）
+ * @param {string} data.userId - 必传，用户 id
+ * @param {number} data.status - 必传，优惠券状态（5 - 待核销）
  * @returns {Promise} 返回一个 Promise 对象，包含请求的结果
  * @example
  * fetchCouponListAPI({
- *   userId: 12345,
+ *   userId: '401211901598814208',
  *   status: 5
  * }).then(response => {
  *   console.log(response.data);
@@ -62,16 +56,15 @@ export const fetchResourceAPI = (
  */
 export const fetchCouponListAPI = (
   data = {
-    userId: 0, // 用户 id，这块有改动，不是字符串传数值
-    status: 5, // 5 - 待核销
+    userId: '401211901598814208',
+    status: 5,
   }
 ) =>
-  uni.request({
-    url: 'https://run.mocky.io/v3/f5f16bad-5537-4735-8962-2451155f038f',
-    method: 'GET',
-    header: {
-      'Content-Type': 'application/json',
-    },
+  request({
+    url: 'presentation/customer/online-offline/v1/order/service/list',
+    method: 'POST',
+    data,
+    cqm: true,
   })
 
 /**
@@ -94,22 +87,23 @@ export const fetchComponentListAPI = (
     page: 2, // 2 - 到店服务
   }
 ) =>
-  uni.request({
-    url: 'https://run.mocky.io/v3/a48dc23e-6370-4489-b934-5b68c300fa0d',
-    method: 'GET',
-    header: {
-      'Content-Type': 'application/json',
-    },
+  request({
+    url: 'presentation/customer/app/home/listComponent',
+    method: 'POST',
+    data,
+    cqm: true,
   })
 
-  /**
+/**
  * 获取到店服务金刚区导航数据
  * @function fetchNavigationAPI
  * @param {Object} [data={}] - 请求参数对象
+ * @param {string} data.displayChannel - 必传，展示渠道，'APP_MP'
  * @param {number} data.bizType - 必传，业务场景类型，2 表示到店服务金刚区
  * @returns {Promise} 返回一个 Promise 对象，包含请求的结果
  * @example
  * fetchNavigationAPI({
+ *   displayChannel: 'APP_MP',
  *   bizType: 2
  * }).then(response => {
  *   console.log(response.data);
@@ -119,23 +113,23 @@ export const fetchComponentListAPI = (
  */
 export const fetchNavigationAPI = (
   data = {
-    bizType: 2, // 业务场景-2-到店服务金刚区
+    displayChannel: 'APP_MP',
+    bizType: 2,
   }
 ) =>
-  uni.request({
-    url: 'https://run.mocky.io/v3/d135efd6-57ae-4e7b-9240-125ccfa4ab71',
-    method: 'GET',
-    header: {
-      'Content-Type': 'application/json',
-    },
+  request({
+    url: 'presentation/customer/app/homepage/v3/navigationArea',
+    method: 'POST',
+    data,
+    cqm: true,
   })
 
-  /**
+/**
  * 获取推荐类目数据
  * @function fetchRecommendClassifyAPI
  * @param {Object} [data={}] - 请求参数对象
- * @param {number} data.recommendType - 必传，推荐类型（例如：1 - 类目区）
- * @param {number} data.commodityClassifyType - 必传，商品类型（例如：2 - 服务商品）
+ * @param {number} data.recommendType - 必传，推荐类型（1 - 类目区）
+ * @param {number} data.commodityClassifyType - 必传，商品类型（2 - 服务商品）
  * @returns {Promise} 返回一个 Promise 对象，包含请求的结果
  * @example
  * fetchRecommendClassifyAPI({
@@ -153,12 +147,11 @@ export const fetchRecommendClassifyAPI = (
     commodityClassifyType: 2, // 商品类型 => 1：实物商品 2：服务商品 3：活体商品
   }
 ) =>
-  uni.request({
-    url: 'https://run.mocky.io/v3/7e13fa80-f8cd-4153-b61f-a2fb1a8ad63f',
-    method: 'GET',
-    header: {
-      'Content-Type': 'application/json',
-    },
+  request({
+    url: 'presentation/customer/app/homepage/v2/recommendClassify',
+    method: 'POST',
+    data,
+    cqm: true,
   })
 
 /**
@@ -170,18 +163,20 @@ export const fetchRecommendClassifyAPI = (
  * @param {string} data.cityCode - 必传，城市编码
  * @param {number} data.lng - 必传，经度
  * @param {number} data.lat - 必传，纬度
- * @param {number} data.categoryId - 必传，类目 ID
+ * @param {array} data.categoryIds - 非必传，类目 ID，不传为推荐区
  * @param {number} data.sortType - 必传，排序类型（例如：1 - 智能排序）
+ * @param {string} data.fromChannel - 必传，来源渠道（例如：'APP'）
  * @returns {Promise} 返回一个 Promise 对象，包含请求的结果
  * @example
  * fetchProductListAPI({
  *   pageNum: 1,
  *   pageSize: 2,
- *   cityCode: '110100',
- *   lng: 116.397428,
- *   lat: 39.90923,
- *   categoryId: 1,
- *   sortType: 1
+ *   cityCode: '3301',
+ *   lng: 121.45712,
+ *   lat: 31.229234,
+ *   categoryIds: ['1730416863288217602'],
+ *   sortType: 2,
+ *   fromChannel: 'APP'
  * }).then(response => {
  *   console.log(response.data);
  * }).catch(error => {
@@ -192,17 +187,51 @@ export const fetchProductListAPI = (
   data = {
     pageNum: 1,
     pageSize: 2,
-    cityCode: '', // 必传 城市编码
-    lng: 0.0, // 必传 经度
-    lat: 0.0, // 必传 纬度
-    categoryId: 1, // 必传 类目id
-    sortType: 1, // 必传 排序类型: 1、智能排序 2、距离优先 3、销量优先 4、低价优先
+    cityCode: '3301',
+    lng: 121.45712,
+    lat: 31.229234,
+    categoryIds: ['1730416863288217602'], // 必传 类目id
+    sortType: 2, // 必传 排序类型: 1、智能排序 2、距离优先 3、销量优先 4、低价优先
+    fromChannel: 'APP',
   }
 ) =>
-  uni.request({
-    url: 'https://run.mocky.io/v3/8909137b-82c8-4b1f-8305-58304a3bb60d',
-    method: 'GET',
-    header: {
-      'Content-Type': 'application/json',
-    },
+  request({
+    url: 'presentation/customer/inStoreService/productList',
+    method: 'POST',
+    data,
+    cqm: true,
   })
+
+
+  /**
+ * 获取当前城市门店信息
+ * @function fetchShopByCityAPI
+ * @param {Object} [data={}] - 请求参数对象
+ * @param {string} data.cityCode - 必传，城市编码
+ * @param {number} data.bizType - 必传，业务类型，3 表示到店服务
+ * @returns {Promise} 返回一个 Promise 对象，包含请求的结果
+ * @example
+ * fetchShopByCityAPI({
+ *   cityCode: '3301',
+ *   bizType: 3
+ * }).then(response => {
+ *   console.log(response.data);
+ * }).catch(error => {
+ *   console.error(error);
+ * });
+ */
+export const fetchShopByCityAPI = (
+  data = {
+    cityCode: '3301',
+    bizType: 3, // 业务类型，1：美洗，2：挂号，3：到店服务
+  }
+) =>
+  request({
+    url: 'presentation/customer/applet/shop/shopByCity',
+    method: 'POST',
+    data,
+    cqm: true,
+  })
+
+// presentation/customer/applet/shop/hasShopCityList
+

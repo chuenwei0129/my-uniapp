@@ -1,3 +1,30 @@
+// distance: "149.9km"
+// image: "http://wp-file-dev.oss-cn-hangzhou.aliyuncs.com/%E9%97%A8%E5%BA%97logo/20240105/f38511e6-13d7-4201-ac0d-4e9abf5c023c_4a491b9b-ad50-409f-9428-8cf4fc73f363.png"
+// itemId: "1743147768059269121"
+// itemName: "测试-zwl-美容6"
+// promotionPrice: 5.44
+// promotionTag: {promotionId: "1872113742495412226", promotionName: "dev测试优惠券", promotionType: 1, rightType: 211,…}
+// discountAmount: 0.01
+// promotionId: "1872113742495412226"
+// promotionName: "dev测试优惠券"
+// promotionRule: {mostAmount: 0, amount: 0.01, discount: 0, isMutex: true, threshold: 0.01, couponTypeInquiry: ""}
+// amount: 0.01
+// couponTypeInquiry: ""
+// discount: 0
+// isMutex: true
+// mostAmount: 0
+// threshold: 0.01
+// promotionType: 1
+// rightType: 211
+// realPrice: 66.66
+// salePoint: null
+// salePrice: 5.45
+// saledStockQty: null
+// shopName: null
+// skuName: "测试-zwl-美容-1"
+// skuld: "1743147768612917249"
+
+
 {
   "code": 0,
   "message": "",

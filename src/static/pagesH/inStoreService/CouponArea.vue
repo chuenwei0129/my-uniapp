@@ -71,7 +71,7 @@ export default {
     },
     handleViewMore () {
       uni.showToast({
-        title: '查看更多优惠券',
+        title: 'TODO 跳转',
         icon: 'none',
       })
     },

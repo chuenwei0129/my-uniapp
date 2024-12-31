@@ -3,11 +3,11 @@
     <!-- 标题和查看更多按钮 -->
     <view class="resource-item__header">
       <view class="resource-item__title">
-        {{ title }}
+        {{ resource.name }}
       </view>
       <view>
         <u-text
-          v-if="list.length > 3"
+          v-if="resource.resList.length > 3"
           suffix-icon="play-right-fill"
           icon-style="font-size: 20rpx; color: #b2b3b5;"
           color="#b2b3b5"
@@ -39,33 +39,31 @@ export default {
     ProductCard,
   },
   props: {
-    id: {
-      type: [String, Number],
-      required: true,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    list: {
-      type: Array,
+    resource: {
+      type: Object,
       required: true,
     },
   },
   computed: {
     filterList () {
-      return this.list.slice(0, 3)
+      return this.resource.resList.slice(0, 3)
     },
   },
   methods: {
     handleViewMore () {
-      console.log('handleClickMore')
+      // TODO: 跳转到更多页面
       // uni.navigateTo({
       //   url: `/pages/resource/list?id=${this.id}`,
       // })
     },
     handleClickProduct (item) {
-      console.log('🚀 ~ handleClickProduct ~ item:', item)
+      uni.$u.debounce(() => {
+        uni.navigateTo({
+          url: `/pagesC/goodsServiceDetail/index?itemId=${
+            item?.itemId || ''
+          }&skuId=${item?.skuId || ''}&shopId=${item?.shopId}`,
+        })
+      }, 500)
     },
   },
 }

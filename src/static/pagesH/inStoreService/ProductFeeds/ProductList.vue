@@ -43,9 +43,9 @@ export default {
   async created () {
     await this.fetchRecommendClassifyData()
     // 默认选中第一个 tab，并将其 categoryId 赋值给 params
-    if (this.tabList.length > 0) {
-      this.params.categoryId = this.tabList[0].id
-    }
+    // if (this.tabList.length > 0) {
+    //   this.params.categoryId = this.tabList[0].id
+    // }
     await this.fetchProductListData()
   },
   methods: {
@@ -59,7 +59,7 @@ export default {
       )
     },
     async fetchProductListData () {
-      const resp = await fetchProductListAPI(this.params)
+      const resp = await fetchProductListAPI()
       this.productList = resp.data.data
       console.log(
         '🚀 ~ fetchProductListData ~ this.productList:',

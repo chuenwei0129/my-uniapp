@@ -8,15 +8,26 @@
       <view class="coupon-card__title">
         {{ coupon.itemName }}
       </view>
-      <!-- TODO: 券码待使用时间还剩7天时，展示“还剩x天”字段，且阿拉伯数字为红色，字重medium -->
       <view class="coupon-card__expiry-date">
-        {{ coupon.verifyValidEndTime }}
+        <template v-if="coupon.daysRemaining > 7">
+          {{ formatDate(coupon.verifyValidEndTime) }} 到期
+        </template>
+        <template v-else-if="coupon.daysRemaining > 0">
+          还剩 <span class="days-remaining">{{ coupon.daysRemaining }}</span> 天
+        </template>
+        <template v-else-if="Number(coupon.daysRemaining) === 0">
+          <span class="expired">{{ coupon.verifyValidEndTime.split(' ')[1] }} 后失效</span>
+        </template>
+        <template v-else>
+          异常情况
+        </template>
       </view>
       <view class="coupon-card__location">
         <u-text
           prefix-icon="map"
           size="24rpx"
           color="#c0c1c5"
+          line-height="24rpx"
           icon-style="font-size: 24rpx; color: #c0c1c5"
           :text="coupon.shopName"
         />
@@ -42,6 +53,12 @@ export default {
     },
   },
   emits: ['click'],
+  methods: {
+    formatDate (dateString) {
+      const date = new Date(dateString)
+      return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`
+    }
+  }
 }
 </script>
 
@@ -88,6 +105,15 @@ export default {
   color: #9e9fa1;
   margin-top: 10rpx;
   margin-bottom: 10rpx;
+}
+
+.days-remaining {
+  color: red;
+  font-weight: 500;
+}
+
+.expired {
+  color: red;
 }
 
 /* 按钮样式 */

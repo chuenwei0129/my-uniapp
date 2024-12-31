@@ -115,6 +115,7 @@ export default {
     },
 
     handleClick (item) {
+      // TODO: 跳转
       uni.showToast({
         title: `金刚区跳转: ${item.miniLink}`,
         icon: 'success',

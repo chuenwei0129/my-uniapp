@@ -3,13 +3,16 @@
   "message": "",
   "data": [
     {
-      "id": 1,
-      "imageUrl": "https://picsum.photos/200",
-      "itemName": "狗狗犬类精致洗护",
+      "daysRemaining": "2",
+      "id": "1873932501362917378",
+      "imageUrl": "http://wp-file-dev.oss-cn-hangzhou.aliyuncs.com/%E9%97%A8%E5%BA%97logo/20231122/11966738-296e-4b04-8f76-13810dad7914_4.png",
+      "itemName": "宠美一体X",
+      "shopId": "1727578756996333570",
+      "shopName": "电商门店-总部企业账户",
       "status": 5,
       "statusName": "待核销",
-      "verifyValidEndTime": 1724966400,
-      "shopName": "南京雨花万象天地店"
+      "verifyCode": "9999109420116",
+      "verifyValidEndTime": "2025-01-03 11:21:58"
     },
     {
       "id": 2,

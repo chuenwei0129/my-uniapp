@@ -5,9 +5,7 @@
       :key="index"
     >
       <ResourceItem
-        :id="item.id"
-        :title="item.name"
-        :list="item.resList"
+        :resource="item"
       />
     </view>
   </view>
@@ -30,7 +28,8 @@ export default {
   computed: {
     // 商品数量 = 0 则不展示该区域: 过滤掉商品数量为 0 的列表项
     filterList () {
-      return this.list.filter((item) => item.resList !== null)
+      // 展示前 2 个商品数量不为 0 的资源位
+      return this.list.filter((item) => item.resList !== null).slice(0, 2)
     },
   },
 }

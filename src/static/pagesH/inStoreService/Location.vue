@@ -210,6 +210,7 @@ export default {
         this.$emit('openSetting', true)
       }
     },
+    // 跳转选择城市页面
     handle2AddressPage () {
       uni.navigateTo({
         url: '/pagesC/mallAddress/index',
